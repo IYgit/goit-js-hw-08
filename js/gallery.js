@@ -67,54 +67,41 @@ const images = [
 
     document.addEventListener('DOMContentLoaded', () => {
         const galleryContainer = document.querySelector('.gallery');
-        const imagesMarkup = images.map(image => `
-          <li class="gallery-item">
-            <a class="gallery-link" href="${image.original}" onclick="event.preventDefault()">
-              <img
-                class="gallery-image"
-                src="${image.preview}"
-                data-source="${image.original}"
-                alt="${image.description}"
-              />
-            </a>
-          </li>
-        `).join('');
-      
-        galleryContainer.innerHTML = imagesMarkup;
-
-        const item = event.target.closest('.gallery-item'); // Намагаємося знайти найближчий елемент .gallery-item
-
-        if (item) {
-            const img = item.querySelector('.gallery-image'); // Знаходимо <img> всередині елемента .gallery-item
-            if (img) {
-                console.log(img.getAttribute('data-source')); // Виведення data-source зображення в консоль
-            }
+        if (galleryContainer) {
+            const imagesMarkup = images.map(image => `
+              <li class="gallery-item">
+                <a class="gallery-link" href="${image.original}" onclick="event.preventDefault()">
+                  <img
+                    class="gallery-image"
+                    src="${image.preview}"
+                    data-source="${image.original}"
+                    alt="${image.description}"
+                  />
+                </a>
+              </li>
+            `).join('');
+    
+            galleryContainer.innerHTML = imagesMarkup;
         }
-      });
     
-
-    document.addEventListener('DOMContentLoaded', () => {
         const galleryItems = document.querySelectorAll('.gallery-item');
-    
         galleryItems.forEach(item => {
             item.addEventListener('click', (event) => {
                 event.preventDefault(); // Запобігає стандартній поведінці посилання
-    
-                // Отримання URL великого зображення з data-source атрибуту <img>
-                const img = item.querySelector('.gallery-image');
-                const src = img.getAttribute('data-source');
-    
-                // Створення модального вікна за допомогою basicLightbox
-                const instance = basicLightbox.create(`
-                    <div class="modal-content" style="width: 1440px; height: 696px; display: flex; align-items: center; justify-content: center; background-color: #2E2F42CC;">
-                        <img src="${src}" style="max-width: 1112px; max-height: 640px; margin: 28px 164px; border: 0 solid transparent;">
-                    </div>`
-                );
-    
-                instance.show(); // Відображення модального вікна
+                const img = event.target.closest('.gallery-item').querySelector('.gallery-image');
+                if (img) {
+                    const src = img.getAttribute('data-source');
+                    const instance = basicLightbox.create(`
+                        <div class="modal-content" style="width: 1440px; height: 696px; display: flex; align-items: center; justify-content: center; background-color: #2E2F42CC;">
+                            <img src="${src}" style="max-width: 1112px; max-height: 640px; margin: 28px 164px; border: 0 solid transparent;">
+                        </div>`
+                    );
+                    instance.show(); // Відображення модального вікна
+                }
             });
         });
     });
+    
     
     
     
